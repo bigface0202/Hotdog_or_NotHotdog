@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tflite/tflite.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ImageInput extends StatefulWidget {
   final Function onSelectImage;
@@ -59,7 +60,6 @@ class _ImageInputState extends State<ImageInput> {
   }
 
   Future predictHotdog(File image) async {
-    double activatedConf;
     var recognition = await Tflite.runModelOnImage(
       path: image.path,
       imageMean: 117, // defaults to 117.0
@@ -96,12 +96,13 @@ class _ImageInputState extends State<ImageInput> {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return Column(
       children: [
         Stack(
           children: [
             Container(
-              width: 400,
+              width: size.width,
               height: 480,
               alignment: Alignment.center,
               decoration: BoxDecoration(
@@ -119,32 +120,34 @@ class _ImageInputState extends State<ImageInput> {
                     ),
             ),
             isRecognized
-                ? Row(
+                ? Stack(
                     children: [
-                      Expanded(
-                        child: Container(
-                          color: isHotdog ? Colors.green : Colors.red,
-                          padding: EdgeInsets.all(10),
-                          alignment: isHotdog
-                              ? Alignment.topCenter
-                              : Alignment.bottomCenter,
-                          child: Row(
-                            children: [
-                              Icon(
-                                isHotdog ? Icons.check : Icons.clear,
-                                size: 28,
-                                color: Colors.white,
-                              ),
-                              Expanded(
-                                child: Text(
-                                  "$resultText",
-                                  style: TextStyle(
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.bold),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ],
+                      Container(
+                        color: isHotdog ? Colors.green : Colors.red,
+                        height: 80,
+                        padding: EdgeInsets.all(10),
+                        alignment: Alignment.topCenter,
+                        child: Text(
+                          "$resultText",
+                          style: GoogleFonts.bungeeInline(
+                            textStyle: TextStyle(
+                              fontSize: 40,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Container(
+                        height: 120,
+                        alignment: Alignment.bottomCenter,
+                        child: CircleAvatar(
+                          maxRadius: 35,
+                          backgroundColor: isHotdog ? Colors.green : Colors.red,
+                          child: Icon(
+                            isHotdog ? Icons.check : Icons.clear,
+                            size: 50,
+                            color: Colors.white,
                           ),
                         ),
                       ),
