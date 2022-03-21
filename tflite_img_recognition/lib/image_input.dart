@@ -15,11 +15,17 @@ class ImageInput extends StatefulWidget {
 }
 
 class _ImageInputState extends State<ImageInput> {
+  // 取得した画像ファイル
   File? _storedImage;
+  // ImagePickerのインスタンス
   final picker = ImagePicker();
+  // 推論結果のテキスト
   String resultText = '';
+  // ホットドックかどうか
   bool isHotdog = false;
+  // 推論済みかどうか
   bool isPredicted = false;
+  // Classifierのインストラクタ
   late Classifier _classifier;
 
   /* カメラから画像を取得 */
@@ -54,7 +60,7 @@ class _ImageInputState extends State<ImageInput> {
   @override
   void initState() {
     super.initState();
-    _classifier = Classifier('hotdog.tflite', 'assets/labels.txt');
+    _classifier = Classifier('hotdog.tflite');
   }
 
   /* 推論処理 */
